@@ -1,0 +1,86 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "outputDirectory": "dist",
+
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=600, max-age=60" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=600, max-age=60" }
+      ]
+    },
+    {
+      "source": "(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=1800, max-age=300"
+        }
+      ]
+    },
+    {
+      "source": "(.*).css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, immutable, s-maxage=2592000, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "(.*).js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, immutable, s-maxage=2592000, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "(.*).json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=86400, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, immutable, s-maxage=2592000, max-age=2592000"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, immutable, s-maxage=2592000, max-age=2592000"
+        }
+      ]
+    }
+  ],
+  "regions": ["hkg1"]
+}

@@ -1,0 +1,416 @@
+---
+import "../styles/global.css";
+import type { I18nContent } from "../i18n/content";
+import { skills, socials } from "../i18n/content";
+
+interface Props {
+  t: I18nContent;
+}
+
+const { t } = Astro.props;
+---
+
+<!doctype html>
+<html lang={t.htmlLang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={t.description} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="alternate" hreflang="en" href="https://dogxi.me/" />
+    <link rel="alternate" hreflang="zh" href="https://dogxi.me/zh" />
+    <link rel="alternate" hreflang="x-default" href="https://dogxi.me/" />
+    <title>Dogxi — {t.title}</title>
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'system';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-white dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 transition-colors duration-300 font-[Inter,system-ui,sans-serif]">
+    <!-- Subtle texture overlay -->
+    <div class="fixed inset-0 pointer-events-none opacity-[0.015] dark:opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.8%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E');"></div>
+
+    <div class="relative min-h-screen flex flex-col">
+      <!-- Header -->
+      <header class="fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-6 md:py-5 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm">
+        <nav class="max-w-2xl mx-auto flex items-center justify-between">
+          <a href={t.lang === "zh" ? "/zh" : "/"} class="text-sm font-medium text-neutral-900 dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors">
+            Dogxi
+          </a>
+          <div class="flex items-center gap-5 md:gap-6">
+            <div class="hidden sm:flex items-center gap-5 text-sm text-neutral-600 dark:text-neutral-400">
+              <a href="#about" class="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.nav.about}</a>
+              <a href="#skills" class="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.nav.skills}</a>
+              <a href="#contact" class="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.nav.contact}</a>
+            </div>
+            <!-- Theme Toggle - Three States -->
+            <button
+              id="theme-toggle"
+              type="button"
+              aria-label="Toggle theme"
+              class="text-xs font-medium px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-400 dark:hover:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            >
+              <span id="theme-label">Auto</span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col justify-center px-4 md:px-6 pt-24 pb-16">
+        <div class="max-w-2xl mx-auto w-full">
+
+          <!-- Hero Section with Avatar -->
+          <section class="mb-16 md:mb-20">
+            <!-- Avatar & Greeting -->
+            <div class="flex items-center gap-4 mb-8">
+              <div class="relative">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-800">
+                  <img
+                    src="https://avatars.githubusercontent.com/u/106546046?s=96&v=4"
+                    alt="Dogxi's avatar"
+                    class="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </div>
+                <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full ring-2 ring-white dark:ring-[#0a0a0a]"></span>
+              </div>
+              <div>
+                <p id="greeting" class="text-neutral-600 dark:text-neutral-400 text-base md:text-lg h-7 overflow-hidden" data-text={t.greeting}></p>
+              </div>
+            </div>
+
+            <!-- Name & Title -->
+            <h1 class="text-3xl md:text-4xl font-semibold text-neutral-900 dark:text-white mb-3 opacity-0 animate-slide-up stagger-1">
+              Dogxi
+              <span class="font-normal text-neutral-500 dark:text-neutral-400">— {t.title}</span>
+            </h1>
+
+            <!-- One-liner (randomized) -->
+            <p id="one-liner" class="text-lg md:text-xl text-neutral-700 dark:text-neutral-300 mb-6 opacity-0 animate-slide-up stagger-2" data-oneliners={JSON.stringify(t.oneLiners)}>
+            </p>
+
+            <!-- Intro -->
+            <div class="space-y-2 text-neutral-600 dark:text-neutral-400 text-base leading-relaxed mb-8 opacity-0 animate-slide-up stagger-3">
+              <p>{t.intro[0]}</p>
+              <p>{t.intro[1]}</p>
+            </div>
+
+            <!-- CTAs -->
+            <div class="flex flex-wrap gap-3 opacity-0 animate-slide-up stagger-4">
+              <a
+                href="https://github.com/dogxii"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-full hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors"
+              >
+                {t.cta.github}
+              </a>
+              <a
+                href="https://blog.dogxi.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-5 py-2.5 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors"
+              >
+                {t.cta.blog}
+                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </section>
+
+          <!-- GitHub Contribution Snake -->
+          <section class="mb-16 md:mb-20 opacity-0 animate-slide-up stagger-5">
+            <h2 class="text-xs font-medium text-neutral-500 dark:text-neutral-500 uppercase tracking-widest mb-4">{t.sections.activity}</h2>
+            <div class="w-full overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 p-2">
+              <img
+                src="https://proxy.dogxi.me/dogxii/dogxii/snake/snake.svg?proxy-host=raw.githubusercontent.com"
+                alt="GitHub Contribution Snake"
+                class="w-full dark:invert dark:hue-rotate-180"
+                loading="lazy"
+              />
+            </div>
+          </section>
+
+          <!-- About -->
+          <section id="about" class="mb-16 md:mb-20 scroll-mt-24 opacity-0 animate-slide-up stagger-6">
+            <h2 class="text-xs font-medium text-neutral-500 dark:text-neutral-500 uppercase tracking-widest mb-4">{t.sections.about}</h2>
+            <div class="space-y-3 text-neutral-700 dark:text-neutral-300 leading-relaxed">
+              <p>{t.about.line1}</p>
+              <p>
+                {t.about.line2} <span class="text-neutral-900 dark:text-white font-medium">{t.about.indie}</span> (Dead Cells, Slay the Spire),
+                <span class="text-neutral-900 dark:text-white font-medium">{t.about.anime}</span> (Rikka, Violet, Bocchi...),
+                and <span class="text-neutral-900 dark:text-white font-medium">{t.about.pets}</span>.
+              </p>
+              <p>{t.about.line3}</p>
+            </div>
+          </section>
+
+          <!-- Skills -->
+          <section id="skills" class="mb-16 md:mb-20 scroll-mt-24 opacity-0 animate-slide-up stagger-7">
+            <h2 class="text-xs font-medium text-neutral-500 dark:text-neutral-500 uppercase tracking-widest mb-4">{t.sections.skills}</h2>
+            <div class="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <span class="px-3 py-1.5 text-sm text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-800 rounded-full bg-neutral-50 dark:bg-neutral-900">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <!-- Contact -->
+          <section id="contact" class="scroll-mt-24 opacity-0 animate-slide-up stagger-8">
+            <h2 class="text-xs font-medium text-neutral-500 dark:text-neutral-500 uppercase tracking-widest mb-4">{t.sections.contact}</h2>
+
+            <!-- Social Icons -->
+            <div class="flex items-center gap-3 mb-6">
+              {socials.map((social) => (
+                <a
+                  href={social.url}
+                  target={social.icon !== "email" ? "_blank" : undefined}
+                  rel={social.icon !== "email" ? "noopener noreferrer" : undefined}
+                  aria-label={social.name}
+                  class="w-10 h-10 flex items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-400 dark:hover:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors"
+                >
+                  {social.icon === "github" && (
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                  )}
+                  {social.icon === "twitter" && (
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  )}
+                  {social.icon === "email" && (
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                  {social.icon === "blog" && (
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 17.25V21h3.75L17.81 9.94a2.5 2.5 0 0 0-3.54-3.54L3 17.25Z" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M14.5 7.5l2 2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  )}
+                </a>
+              ))}
+            </div>
+
+            <!-- Contact Links -->
+            <div class="space-y-2 text-neutral-700 dark:text-neutral-300">
+              <p>
+                <span class="text-neutral-500">{t.contact.email}</span>{" "}
+                <a href="mailto:hi@dogxi.me" class="text-neutral-900 dark:text-white underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-700 hover:decoration-neutral-500 transition-colors">
+                  hi@dogxi.me
+                </a>
+              </p>
+              <p>
+                <span class="text-neutral-500">{t.contact.blog}</span>{" "}
+                <a href="https://blog.dogxi.me" target="_blank" rel="noopener noreferrer" class="text-neutral-900 dark:text-white underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-700 hover:decoration-neutral-500 transition-colors inline-flex items-center gap-1">
+                  {t.contact.blogName}
+                  <svg class="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </p>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="px-4 md:px-6 py-6">
+        <div class="max-w-2xl mx-auto flex items-center justify-between text-xs text-neutral-500">
+          <span>© 2025 Dogxi</span>
+          <a
+            href={t.langSwitch.href}
+            class="flex items-center gap-1.5 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>{t.langSwitch.label}</span>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <style>
+      @keyframes slide-up {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes typewriter {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-3px);
+        }
+      }
+
+      .animate-slide-up {
+        animation: slide-up 0.5s ease-out forwards;
+      }
+
+      .stagger-1 { animation-delay: 0.1s; }
+      .stagger-2 { animation-delay: 0.2s; }
+      .stagger-3 { animation-delay: 0.3s; }
+      .stagger-4 { animation-delay: 0.4s; }
+      .stagger-5 { animation-delay: 0.5s; }
+      .stagger-6 { animation-delay: 0.6s; }
+      .stagger-7 { animation-delay: 0.7s; }
+      .stagger-8 { animation-delay: 0.8s; }
+
+      .char {
+        display: inline-block;
+        opacity: 0;
+        animation: typewriter 0.3s ease-out forwards;
+      }
+
+      .char-bounce {
+        display: inline-block;
+        animation: bounce 2s ease-in-out infinite;
+      }
+    </style>
+
+    <script>
+      // Theme states: system -> light -> dark -> system
+      type Theme = 'system' | 'light' | 'dark';
+
+      function getStoredTheme(): Theme {
+        const stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark' || stored === 'system') {
+          return stored;
+        }
+        return 'system';
+      }
+
+      function applyTheme(theme: Theme) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+
+      function updateThemeUI(theme: Theme) {
+        const label = document.getElementById('theme-label');
+        if (!label) return;
+
+        if (theme === 'system') {
+          label.textContent = 'Auto';
+        } else if (theme === 'light') {
+          label.textContent = 'Light';
+        } else {
+          label.textContent = 'Dark';
+        }
+      }
+
+      function cycleTheme(): Theme {
+        const current = getStoredTheme();
+        const next: Theme = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
+        localStorage.setItem('theme', next);
+        return next;
+      }
+
+      // Initialize theme
+      let currentTheme = getStoredTheme();
+      applyTheme(currentTheme);
+      updateThemeUI(currentTheme);
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (getStoredTheme() === 'system') {
+          applyTheme('system');
+        }
+      });
+
+      // Theme toggle click handler
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          currentTheme = cycleTheme();
+          applyTheme(currentTheme);
+          updateThemeUI(currentTheme);
+        });
+      }
+
+      // Greeting animation with typewriter effect then bouncing
+      function animateGreeting() {
+        const el = document.getElementById('greeting');
+        if (!el) return;
+
+        const text = el.dataset.text || '';
+        el.innerHTML = '';
+
+        // Typewriter effect
+        [...text].forEach((char, i) => {
+          const span = document.createElement('span');
+          span.textContent = char === ' ' ? '\u00A0' : char;
+          span.className = 'char';
+          span.style.animationDelay = `${i * 0.05}s`;
+          el.appendChild(span);
+        });
+
+        // After typewriter completes, add bounce effect
+        const totalTime = text.length * 50 + 300;
+        setTimeout(() => {
+          el.innerHTML = '';
+          [...text].forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.className = 'char-bounce';
+            span.style.animationDelay = `${i * 0.1}s`;
+            el.appendChild(span);
+          });
+        }, totalTime);
+      }
+
+      // Initialize greeting animation
+      animateGreeting();
+
+      // Randomize one-liner on each visit
+      const oneLinerEl = document.getElementById('one-liner');
+      if (oneLinerEl) {
+        const oneLiners = JSON.parse(oneLinerEl.dataset.oneliners || '[]');
+        const randomIndex = Math.floor(Math.random() * oneLiners.length);
+        oneLinerEl.textContent = oneLiners[randomIndex];
+      }
+    </script>
+  </body>
+</html>
