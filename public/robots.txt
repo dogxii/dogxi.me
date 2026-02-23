@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dogxi.me/sitemap-index.xml
