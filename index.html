@@ -549,6 +549,29 @@
         transition: color var(--dur) ease;
       }
 
+      .hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.34rem 0.58rem;
+        max-width: min(100%, 430px);
+        list-style: none;
+        color: var(--text-3);
+        font-size: 0.68rem;
+        font-weight: 400;
+        line-height: 1.35;
+      }
+
+      .hero-tags li {
+        white-space: nowrap;
+      }
+
+      .hero-tags li::before {
+        content: "#";
+        margin-right: 0.12rem;
+        color: color-mix(in srgb, var(--text-3) 72%, transparent);
+      }
+
       /* ── Media dock ── */
       .links {
         width: min(100%, 470px);
@@ -1247,6 +1270,7 @@
 
       .profile,
       .links li,
+      .hero-tags,
       .foot {
         animation: rise 0.52s var(--ease) both;
       }
@@ -1256,7 +1280,8 @@
       .links li:nth-child(2) { animation-delay: 0.17s; }
       .links li:nth-child(3) { animation-delay: 0.22s; }
       .links li:nth-child(4) { animation-delay: 0.27s; }
-      .foot { animation-delay: 0.32s; }
+      .hero-tags { animation-delay: 0.32s; }
+      .foot { animation-delay: 0.36s; }
 
       .profile:not(:hover) .avatar {
         animation: idle 4.8s ease-in-out 1.2s infinite;
@@ -1332,6 +1357,7 @@
       @media (prefers-reduced-motion: reduce) {
         .profile,
         .links li,
+        .hero-tags,
         .foot,
         .profile:not(:hover) .avatar,
         .avatar-field::before,
@@ -1459,7 +1485,7 @@
             <svg class="name-scribble" viewBox="0 0 72 16" aria-hidden="true">
               <polyline points="3 10 15 5 10 13 30 4 24 13 47 6 41 12 69 7" />
             </svg>
-            <p class="tagline">Rookie Dog.</p>
+            <p class="tagline" id="tagline">Rookie Dog.</p>
           </div>
 
           <!-- Media links -->
@@ -1539,6 +1565,13 @@
                 </span>
               </a>
             </li>
+          </ul>
+
+          <ul class="hero-tags" role="list" aria-label="Dogxi tags">
+            <li>Frontend</li>
+            <li>GameDev</li>
+            <li>可爱至上</li>
+            <li>越菜越爱玩</li>
           </ul>
         </div>
 
@@ -1757,6 +1790,10 @@
       var html = document.documentElement;
       var pointerFrame = 0;
       var scrollFrame = 0;
+      var taglines = [
+        "Rookie Dog.",
+        "Code, Life, Future."
+      ];
 
       function sync() {
         var dark = html.classList.contains("dark");
@@ -1766,6 +1803,12 @@
 
       function canHoverGrid() {
         return window.matchMedia("(pointer: fine)").matches;
+      }
+
+      function initTagline() {
+        var tagline = document.getElementById("tagline");
+        if (!tagline) return;
+        tagline.textContent = taglines[Math.floor(Math.random() * taglines.length)];
       }
 
       function setGridSpot(x, y) {
@@ -1853,6 +1896,7 @@
       }
 
       sync();
+      initTagline();
       updateHeroState();
       initProjectImages();
       initScrollReveal();
