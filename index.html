@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Dogxi — rookie dog, web projects, and OSS experiments." />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>Dogxi - Rookie Dog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +14,7 @@
       (function () {
         document.documentElement.classList.add("js");
         var t = localStorage.getItem("theme");
-        if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        if (t === "dark") {
           document.documentElement.classList.add("dark");
         }
       })();
@@ -209,40 +208,25 @@
         position: fixed;
         top: max(1.1rem, env(safe-area-inset-top));
         right: max(1.1rem, env(safe-area-inset-right));
-        z-index: 10;
-        width: 40px;
-        height: 40px;
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        background: var(--surface-soft);
+        z-index: 12;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
         color: var(--text-2);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
+        overflow: visible;
         touch-action: manipulation;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.045);
+        backdrop-filter: none;
+        box-shadow: none;
         transition:
-          background var(--dur) ease,
-          border-color var(--dur) ease,
           color var(--dur) ease,
           transform 0.22s var(--spring);
         -webkit-tap-highlight-color: transparent;
-      }
-
-      #theme-btn::after {
-        content: "";
-        position: absolute;
-        top: -30%;
-        bottom: -30%;
-        left: 50%;
-        width: 16px;
-        background: rgba(255, 255, 255, 0.42);
-        opacity: 0;
-        transform: translateX(-180%) skewX(-22deg);
-        pointer-events: none;
       }
 
       #theme-btn svg {
@@ -251,7 +235,6 @@
       }
 
       #theme-btn:active {
-        background: var(--surface-active);
         transform: scale(0.94);
       }
 
@@ -266,17 +249,69 @@
 
       @media (hover: hover) {
         #theme-btn:hover {
-          background: var(--surface-active);
           color: var(--text);
           transform: translateY(-2px) rotate(-8deg);
-        }
-
-        #theme-btn:hover::after {
-          animation: shine-sweep 0.72s ease both;
         }
       }
 
       /* ── Layout ── */
+      .top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9;
+        min-height: 82px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: max(1.08rem, env(safe-area-inset-top));
+        pointer-events: none;
+      }
+
+      .top-nav::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 96px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--bg) 96%, transparent) 0%,
+          color-mix(in srgb, var(--bg) 72%, transparent) 44%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+
+      .top-nav__links {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: clamp(1.1rem, 4vw, 2.2rem);
+        pointer-events: auto;
+      }
+
+      .top-nav a {
+        display: block;
+        padding: 0.34rem 0;
+        color: var(--text-2);
+        text-decoration: none;
+        font-size: 0.72rem;
+        font-weight: 400;
+        letter-spacing: 0.18em;
+        line-height: 1;
+        transition:
+          color var(--dur) ease,
+          transform 0.22s var(--spring);
+      }
+
+      @media (hover: hover) {
+        .top-nav a:hover {
+          color: var(--text);
+          transform: translateY(-1px);
+        }
+      }
+
       .site {
         position: relative;
         z-index: 1;
@@ -579,10 +614,6 @@
           transform: translateY(-1px);
         }
 
-        .links a:hover .arrow {
-          color: var(--text-2);
-          transform: translate(1px, -1px);
-        }
       }
 
       /* ── Link icon box ── */
@@ -590,24 +621,20 @@
         width: 28px;
         height: 28px;
         flex-shrink: 0;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: color-mix(in srgb, var(--bg) 82%, transparent);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--text-2);
         transition:
-          border-color var(--dur) ease,
-          background var(--dur) ease,
           color var(--dur) ease,
           transform 0.22s var(--spring);
       }
 
       @media (hover: hover) {
         .links a:hover .icon-box {
-          border-color: color-mix(in srgb, var(--text) 14%, var(--border));
-          background: color-mix(in srgb, var(--bg) 92%, transparent);
           color: var(--text);
           transform: scale(1.02);
         }
@@ -639,11 +666,6 @@
         clip: rect(0, 0, 0, 0);
         white-space: nowrap;
         border: 0;
-      }
-
-      /* ── Arrow ── */
-      .arrow {
-        display: none;
       }
 
       /* ── Footer ── */
@@ -711,6 +733,7 @@
         z-index: 0;
         width: max-content;
         max-width: 100%;
+        scroll-margin-top: 7rem;
         padding: 0 0.2em;
         display: inline-grid;
         grid-auto-flow: column;
@@ -986,6 +1009,42 @@
         line-height: 1.25;
       }
 
+      .project-title-row {
+        display: flex;
+        align-items: center;
+        gap: 0.28rem;
+        min-width: 0;
+      }
+
+      .project-title {
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .project-stars {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.22rem;
+        color: var(--text-2);
+        font-size: 0.68rem;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .project-stars::before {
+        content: "";
+        width: 0.76em;
+        height: 0.76em;
+        background: currentColor;
+        opacity: 0.64;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%2024%2024%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27m12%202%203.09%206.26L22%209.27l-5%204.87%201.18%206.88L12%2017.77l-6.18%203.25L7%2014.14%202%209.27l6.91-1.01L12%202z%27/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%2024%2024%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27m12%202%203.09%206.26L22%209.27l-5%204.87%201.18%206.88L12%2017.77l-6.18%203.25L7%2014.14%202%209.27l6.91-1.01L12%202z%27/%3E%3C/svg%3E") center / contain no-repeat;
+      }
+
       .project-overlay p {
         max-width: 30ch;
         font-size: 0.76rem;
@@ -993,26 +1052,11 @@
         color: var(--text-2);
       }
 
-      .project-copy {
-        display: none;
-      }
-
-      .project-copy h4 {
-        font-size: 0.92rem;
-        font-weight: 500;
-        line-height: 1.35;
-        color: var(--text);
-      }
-
       .site-foot {
         display: grid;
         justify-items: center;
         gap: 0.7rem;
         padding-top: 0.5rem;
-      }
-
-      .site-foot .links {
-        width: auto;
       }
 
       .reveal {
@@ -1123,22 +1167,6 @@
         50% {
           opacity: 0.72;
           transform: scale(1) rotate(45deg);
-        }
-      }
-
-      @keyframes shine-sweep {
-        from {
-          opacity: 0;
-          transform: translateX(-180%) skewX(-22deg);
-        }
-
-        35% {
-          opacity: 0.55;
-        }
-
-        to {
-          opacity: 0;
-          transform: translateX(150%) skewX(-22deg);
         }
       }
 
@@ -1311,7 +1339,6 @@
         .profile-dot,
         .name-scribble,
         .name-scribble polyline,
-        #theme-btn::after,
         .scroll-cue svg,
         .display-title .char,
         .title-pill::after,
@@ -1328,7 +1355,6 @@
           display: none;
         }
         .links a,
-        .arrow,
         #theme-btn,
         .scroll-cue,
         .avatar,
@@ -1403,6 +1429,13 @@
       </svg>
     </button>
 
+    <nav class="top-nav" aria-label="Project sections">
+      <div class="top-nav__links">
+        <a href="#web-title">WEB</a>
+        <a href="#oss-title">OSS</a>
+      </div>
+    </nav>
+
     <main class="site" id="top">
       <section class="hero" aria-labelledby="intro-title">
         <div class="wrap">
@@ -1444,12 +1477,6 @@
                   <span class="link-title">Blog</span>
                   <span class="link-sub">blog.dogxi.me</span>
                 </span>
-                <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <line x1="7" y1="17" x2="17" y2="7"/>
-                  <polyline points="7 7 17 7 17 17"/>
-                </svg>
               </a>
             </li>
 
@@ -1475,12 +1502,6 @@
                   <span class="link-title">GitHub</span>
                   <span class="link-sub">github.com/dogxii</span>
                 </span>
-                <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <line x1="7" y1="17" x2="17" y2="7"/>
-                  <polyline points="7 7 17 7 17 17"/>
-                </svg>
               </a>
             </li>
 
@@ -1499,12 +1520,6 @@
                   <span class="link-title">iWeb</span>
                   <span class="link-sub">i.dogxi.me</span>
                 </span>
-                <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <line x1="7" y1="17" x2="17" y2="7"/>
-                  <polyline points="7 7 17 7 17 17"/>
-                </svg>
               </a>
             </li>
 
@@ -1522,12 +1537,6 @@
                   <span class="link-title">Email</span>
                   <span class="link-sub">hi@dogxi.me</span>
                 </span>
-                <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                     stroke-linejoin="round" aria-hidden="true">
-                  <line x1="7" y1="17" x2="17" y2="7"/>
-                  <polyline points="7 7 17 7 17 17"/>
-                </svg>
               </a>
             </li>
           </ul>
@@ -1565,106 +1574,82 @@
 
             <div class="project-grid">
               <a class="project-card reveal" href="https://blog.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="blog.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="blog.dogxi.me">
                   <img src="assets/projects/web/01-blog.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>blog.dogxi.me</h3>
-                    <p>Notes, code, and fragments.</p>
+                    <h3>Dogxi Blog</h3>
+                    <p>笔记，代码，远方.</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>blog.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://face.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="face.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="face.dogxi.me">
                   <img src="assets/projects/web/02-face.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>face.dogxi.me</h3>
-                    <p>Frontend interview practice.</p>
+                    <h3>Interview Practice</h3>
+                    <p>面试题目练习</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>face.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://resume.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="resume.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="resume.dogxi.me">
                   <img src="assets/projects/web/03-resume.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>resume.dogxi.me</h3>
-                    <p>Personal resume generator.</p>
+                    <h3>Resume</h3>
+                    <p>个人简历制作</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>resume.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://im-template.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="im-template.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="im-template.dogxi.me">
                   <img src="assets/projects/web/04-im-template.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>im-template.dogxi.me</h3>
-                    <p>Instant messaging UI template.</p>
+                    <h3>IM-template</h3>
+                    <p>即时通讯界面模板</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>im-template.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://ami.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="ami.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="ami.dogxi.me">
                   <img src="assets/projects/web/05-ami.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>ami.dogxi.me</h3>
-                    <p>AI agent workspace.</p>
+                    <h3>Ami</h3>
+                    <p>极简命令行 Agent 工具</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>ami.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://zzuli.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="zzuli.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="zzuli.dogxi.me">
                   <img src="assets/projects/web/06-zzuli.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>zzuli.dogxi.me</h3>
-                    <p>ZZULI project space.</p>
+                    <h3>ZZULI.dev</h3>
+                    <p>ZZULI 社区信息流</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>zzuli.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://kivi.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="kivi.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="kivi.dogxi.me">
                   <img src="assets/projects/web/07-kivi.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>kivi.dogxi.me</h3>
-                    <p>Small web app experiment.</p>
+                    <h3>Kivi 文档</h3>
+                    <p>机器人开发者文档</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>kivi.dogxi.me</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://dxc.dogxi.me" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dxc.dogxi.me" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dxc.dogxi.me">
                   <img src="assets/projects/web/08-dxc.webp" alt="" width="1200" height="630" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dxc.dogxi.me</h3>
-                    <p>DXC project space.</p>
+                    <h3>Dxcode</h3>
+                    <p>dx 算法编码</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dxc.dogxi.me</h4>
                 </div>
               </a>
             </div>
@@ -1687,93 +1672,72 @@
 
             <div class="project-grid">
               <a class="project-card reveal" href="https://github.com/dogxii/iface" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/iface" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/iface">
                   <img src="assets/projects/oss/01-iface.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/iface</h3>
-                    <p>Frontend interview practice tool.</p>
+                    <h3 class="project-title-row"><span class="project-title">iFace</span><span class="project-stars" aria-label="130 stars">130</span></h3>
+                    <p>程序员面试题库及刷题工具</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/iface</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/r2-image" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/r2-image" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/r2-image">
                   <img src="assets/projects/oss/02-r2-image.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/r2-image</h3>
-                    <p>Image service on Cloudflare R2.</p>
+                    <h3 class="project-title-row"><span class="project-title">R2-image</span><span class="project-stars" aria-label="0 stars">0</span></h3>
+                    <p>基于 Cloudflare R2 的个人图床</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/r2-image</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/ami" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/ami" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/ami">
                   <img src="assets/projects/oss/03-ami.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/ami</h3>
-                    <p>Lightweight terminal AI agent.</p>
+                    <h3 class="project-title-row"><span class="project-title">Ami</span><span class="project-stars" aria-label="2 stars">2</span></h3>
+                    <p>轻量终端 Agent 工具</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/ami</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/60s-web" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/60s-web" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/60s-web">
                   <img src="assets/projects/oss/04-60s-web.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/60s-web</h3>
-                    <p>Fast web view for 60-second updates.</p>
+                    <h3 class="project-title-row"><span class="project-title">60s-web</span><span class="project-stars" aria-label="113 stars">113</span></h3>
+                    <p>60s 信息聚合导航页</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/60s-web</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/bark-bark" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/bark-bark" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/bark-bark">
                   <img src="assets/projects/oss/05-bark-bark.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/bark-bark</h3>
-                    <p>Bark notification CLI.</p>
+                    <h3 class="project-title-row"><span class="project-title">bark-bark</span><span class="project-stars" aria-label="1 star">1</span></h3>
+                    <p>ios / Bark 通知 CLI</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/bark-bark</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/webark-im-template" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/webark-im-template" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/webark-im-template">
                   <img src="assets/projects/oss/06-webark-im-template.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/webark-im-template</h3>
-                    <p>WebArk instant messaging template.</p>
+                    <h3 class="project-title-row"><span class="project-title">Webark-im-template</span><span class="project-stars" aria-label="43 stars">43</span></h3>
+                    <p>即时通讯界面模版</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/webark-im-template</h4>
                 </div>
               </a>
 
               <a class="project-card reveal" href="https://github.com/dogxii/astro-doge" target="_blank" rel="noopener noreferrer">
-                <div class="project-shot" data-placeholder="dogxii/astro-doge" aria-hidden="true">
+                <div class="project-shot" data-placeholder="dogxii/astro-doge">
                   <img src="assets/projects/oss/07-astro-doge.webp" alt="" width="1200" height="600" loading="lazy" decoding="async" />
                   <div class="project-overlay">
-                    <h3>dogxii/astro-doge</h3>
-                    <p>Astro theme and site starter.</p>
+                    <h3 class="project-title-row"><span class="project-title">Astro-doge</span><span class="project-stars" aria-label="10 stars">10</span></h3>
+                    <p>Astro 轻量博客主题</p>
                   </div>
-                </div>
-                <div class="project-copy">
-                  <h4>dogxii/astro-doge</h4>
                 </div>
               </a>
             </div>
