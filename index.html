@@ -395,120 +395,18 @@
       }
 
       .avatar-field {
-        position: relative;
-        display: grid;
-        place-items: center;
-        width: 88px;
-        height: 88px;
-      }
-
-      .avatar-field::before {
-        content: "";
-        position: absolute;
-        inset: 6px;
-        border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-        border-radius: 50%;
-        opacity: 0.42;
-        transform: scale(0.94);
-        animation: avatar-halo 5.6s ease-in-out 1.4s infinite;
-      }
-
-      .avatar-field::after {
-        content: "";
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--spark-1);
-        opacity: 0.74;
-        animation: dot-drift 4.4s ease-in-out 0.4s infinite;
-      }
-
-      .profile-dot {
-        --dot-size: 4px;
-        --x: 0;
-        --y: 0;
-        --burst-x: var(--x);
-        --burst-y: var(--y);
-        position: absolute;
-        width: var(--dot-size);
-        height: var(--dot-size);
-        border-radius: 50%;
-        background: var(--spark-2);
-        opacity: 0.5;
-        pointer-events: none;
-        animation: dot-drift 4.8s ease-in-out infinite;
-      }
-
-      .profile-dot.one {
-        --dot-size: 5px;
-        --x: -7px;
-        --y: 4px;
-        --burst-x: -12px;
-        --burst-y: -4px;
-        top: 20px;
-        left: 9px;
-      }
-
-      .profile-dot.two {
-        --dot-size: 3px;
-        --x: 6px;
-        --y: -5px;
-        --burst-x: 12px;
-        --burst-y: -10px;
-        right: 12px;
-        bottom: 22px;
-        background: var(--spark-3);
-        animation-delay: 0.3s;
-      }
-
-      .profile-dot.three {
-        --dot-size: 4px;
-        --x: 5px;
-        --y: 7px;
-        --burst-x: 9px;
-        --burst-y: 12px;
-        left: 18px;
-        bottom: 14px;
-        background: var(--spark-1);
-        animation-delay: 0.65s;
+        width: 74px;
+        height: 74px;
       }
 
       .avatar {
         width: 74px;
         height: 74px;
         border-radius: 50%;
-        border: 1px solid var(--border);
+        border: 0;
         object-fit: cover;
         display: block;
-        /* prevent layout shift */
         aspect-ratio: 1;
-        box-shadow: 0 0 0 6px var(--surface-soft);
-        transition:
-          border-color var(--dur) ease,
-          box-shadow var(--dur) ease,
-          transform 0.34s var(--spring);
-      }
-
-      @media (hover: hover) {
-        .profile:hover .avatar {
-          box-shadow: 0 0 0 8px var(--surface-soft);
-          transform: translateY(-3px) scale(1.03);
-        }
-
-        .profile:hover .profile-dot {
-          animation: profile-burst 0.72s var(--spring) both;
-        }
-
-        .profile:hover .profile-dot.two {
-          animation-delay: 0.04s;
-        }
-
-        .profile:hover .profile-dot.three {
-          animation-delay: 0.08s;
-        }
       }
 
       .name {
@@ -1193,51 +1091,6 @@
         }
       }
 
-      @keyframes idle {
-        0%, 84%, 100% { transform: translateY(0) rotate(0deg); }
-        88% { transform: translateY(-2px) rotate(-1deg); }
-        92% { transform: translateY(0) rotate(1deg); }
-      }
-
-      @keyframes avatar-halo {
-        0%, 100% {
-          opacity: 0.36;
-          transform: scale(0.94);
-        }
-
-        50% {
-          opacity: 0.7;
-          transform: scale(1.04);
-        }
-      }
-
-      @keyframes dot-drift {
-        0%, 100% {
-          transform: translate(0, 0) scale(0.92);
-        }
-
-        50% {
-          transform: translate(var(--x), var(--y)) scale(1.14);
-        }
-      }
-
-      @keyframes profile-burst {
-        from {
-          opacity: 0;
-          transform: translate(0, 0) scale(0.1);
-        }
-
-        55% {
-          opacity: 0.86;
-          transform: translate(var(--burst-x), var(--burst-y)) scale(1.2);
-        }
-
-        to {
-          opacity: 0.64;
-          transform: translate(var(--x), var(--y)) scale(1);
-        }
-      }
-
       @keyframes draw-scribble {
         from {
           opacity: 0;
@@ -1282,10 +1135,6 @@
       .links li:nth-child(4) { animation-delay: 0.27s; }
       .hero-tags { animation-delay: 0.32s; }
       .foot { animation-delay: 0.36s; }
-
-      .profile:not(:hover) .avatar {
-        animation: idle 4.8s ease-in-out 1.2s infinite;
-      }
 
       @media (max-width: 860px) {
         .project-grid {
@@ -1359,10 +1208,6 @@
         .links li,
         .hero-tags,
         .foot,
-        .profile:not(:hover) .avatar,
-        .avatar-field::before,
-        .avatar-field::after,
-        .profile-dot,
         .name-scribble,
         .name-scribble polyline,
         .scroll-cue svg,
@@ -1468,15 +1313,12 @@
           <!-- Profile -->
           <div class="profile">
             <div class="avatar-field" aria-hidden="true">
-              <span class="profile-dot one"></span>
-              <span class="profile-dot two"></span>
-              <span class="profile-dot three"></span>
               <img
                 class="avatar"
                 src="https://avatars.githubusercontent.com/u/106546046?s=460&v=4"
                 alt=""
-                width="72"
-                height="72"
+                width="74"
+                height="74"
                 loading="eager"
                 decoding="async"
               />
